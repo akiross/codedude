@@ -1,6 +1,6 @@
 // Compile depending on the version
-// g++ test_gl.cpp gl_core_3_1.c -o test_gl4 -I/usr/include/GL/ -lglut -lGL -lGLU
-// g++ test_gl.cpp gl_core_4_2.c -o test_gl4 -I/usr/include/GL/ -lglut -lGL -lGLU
+// g++ test_gl.cpp gl_core_3_1.c -o test_gl -lglut -lGL -lGLU
+// g++ test_gl.cpp gl_core_4_2.c -o test_gl -lglut -lGL -lGLU
 
 #include <iostream>
 #include <fstream>
