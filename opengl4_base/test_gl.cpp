@@ -163,6 +163,13 @@ void ogl_init() {
 	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	// Enable the usage of the attribute with given index
 	glEnableVertexAttribArray(vPosition);
+	
+	// Set a color for the fragment shader
+	GLint unif_name = glGetUniformLocation(program, "MyColor");
+	if (unif_name == -1)
+		std::cerr << "ERROR: Cannot find uniform variable MyColor\n";
+	else
+		glUniform4f(unif_name, 1.0, 1.0, 0.0, 1.0);
 }
 
 void ogl_resize(int w, int h) {

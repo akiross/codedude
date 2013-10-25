@@ -2,6 +2,9 @@
 
 out vec4 fColor;
 
+// Uses a uniform variable to set the color
+uniform vec4 MyColor;
+
 void main() {
-	fColor = vec4(0.0, 0.0, 1.0, 1.0);
+	fColor = MyColor;
 }
