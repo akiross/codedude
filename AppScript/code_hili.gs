@@ -16,6 +16,7 @@
  
  Changelog
  v 0.1 - initial code, minimal support for Python3 and micro support for C.
+ v 0.2 - updated keywords and functions for python.
 */
 
 function onOpen() {
