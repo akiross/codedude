@@ -8,6 +8,16 @@ I think.
 Maybe.
 Dunno.
 
+License
+-------
+The work in this repository is provided "as-is", distributed under the Creative
+Commons Attribution-NonCommercial-ShareAlike 3.0, available at the URL:
+	
+	http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+Changelogs
+==========
+
 Oct 27, 2013
 ------------
 Today I experimented a bit with OpenCL. Coming from the CUDA experience I found

@@ -87,14 +87,29 @@ function highlighter(colors) {
 }
 
 function hiliPy3() {
-  var keys = ['def', 'pass', 'if', 'else', 'elif', 'return', 'yield', 'with', 'in', 'is', 'not', 'or', 'and',
-             'import', 'from', 'as', 'lambda'];
-  var funcs = ['list', 'dict', 'print', 'set'];
-  var modules = ['sys', 'os', 'urllib', 'random'];
+  var keys = ['and', 'as', 'assert', 'break', 'class',
+              'continue', 'def', 'del', 'elif', 'else', 'except', 'finally',
+              'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda',
+              'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try',
+              'while', 'with', 'yield'];
+  var funcs = ['abs', 'dir', 'hex', 'next', 'slice', 'all', 'divmod', 'id',
+               'object', 'sorted', 'any', 'enumerate', 'input', 'oct',
+               'staticmethod', 'ascii', 'eval', 'int', 'open', 'str', 'bin',
+               'exec', 'isinstance', 'ord', 'sum', 'bool', 'filter',
+               'issubclass', 'pow', 'super', 'bytearray', 'float', 'iter',
+               'print', 'tuple', 'bytes', 'format', 'len', 'property', 'type',
+               'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod',
+               'getattr', 'locals', 'repr', 'zip', 'compile', 'globals', 'map',
+               'reversed', '__import__', 'complex', 'hasattr', 'max', 'round',
+               'delattr', 'hash', 'memoryview', 'set', 'dict', 'help', 'min',
+               'setattr'];
+  var modules = ['sys', 'os', 'urllib', 'random', 'math', 'argparse'];
   var comments = ['#.*$'];
   var strings = ['"[^"]*"', "'[^']*'", '[^”]*”', '[‘’“”][^‘’“”]*[‘’“”]'];
-  var literals = ['True', 'False', '\\d+', '\\d*\\.\\d+', '0x[a-fA-F0-9]+'];
-  var colors = {'#FF0000': keys, '#0000FF': modules, '#0088FF': funcs, '#FF00FF': literals, '#777777': comments, '#00AA00': strings};
+  var literals = ['True', 'False', 'None', '\\d+', '\\d*\\.\\d+',
+                  '0x[a-fA-F0-9]+'];
+  var colors = {'#FF0000': keys, '#0000FF': modules, '#0088FF': funcs,
+                '#FF00FF': literals, '#777777': comments, '#00AA00': strings};
   highlighter(colors);
 }
 
