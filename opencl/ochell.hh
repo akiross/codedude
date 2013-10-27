@@ -32,10 +32,10 @@ Feature:
 #include <fstream>
 #include <sstream>
 #include <utility>
-#ifndef __APPLE__
-	#include <CL/cl.h>
-#else
+#ifdef __APPLE__
 	#include <OpenCL/opencl.h>
+#else
+	#include <CL/cl.hpp>
 #endif
 
 struct OCHException;
@@ -87,6 +87,22 @@ cl::CommandQueue create_command_queue(cl::Context &context, cl::Device &device,
 // Read size bytes starting at offset from the buffer, and store it in ptr
 void blocking_read_buffer(cl::CommandQueue &queue, cl::Buffer &buffer,
 	size_t offset, size_t size, void *ptr);
+
+// Build a program for the specified devices
+void build_program(cl::Program &program, std::vector<cl::Device> &devices,
+	const char *options = 0);
+
+// Load a program from a file and built it for the specified devices
+cl::Program load_and_build_program(cl::Context &context,
+	std::vector<cl::Device> &devices, const std::string &path);
+	
+// Enqueue a kernel to be run with specified working element counts
+cl::Event enqueue_nd_range_kernel(cl::CommandQueue &queue, cl::Kernel kernel,
+	const cl::NDRange &offset, const cl::NDRange &global,
+	const cl::NDRange &local);
+
+// Load a kernel with given name from the program
+cl::Kernel load_kernel(cl::Program &program, const std::string &entry_point);
 
 ///////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// Implementation /////////////////////////////////
@@ -273,6 +289,47 @@ void blocking_read_buffer(cl::CommandQueue &queue, cl::Buffer &buffer,
 	if (error != CL_SUCCESS)
 		throw OCHException("Queue::enqueueReadBuffer()", error);
 }
+
+void build_program(cl::Program &program, std::vector<cl::Device> &devices,
+	const char *options)
+{
+	cl_int error = program.build(devices, options);
+	if (error != CL_SUCCESS)
+		throw OCHException("Program::build()", error);
+}
+
+cl::Program load_and_build_program(cl::Context &context,
+	std::vector<cl::Device> &devices, const std::string &path)
+{
+	cl::Program program(context, load_source(path));
+	build_program(program, devices);
+	return program;
+}
+
+cl::Event enqueue_nd_range_kernel(cl::CommandQueue &queue, cl::Kernel kernel,
+	const cl::NDRange &offset, const cl::NDRange &global,
+	const cl::NDRange &local)
+{
+	// Create an event to query the status of the execution
+	cl::Event event;
+	// Execute the kernel
+	cl_int error = queue.enqueueNDRangeKernel(kernel, offset, global, local,
+		0, &event);
+
+	if (error != CL_SUCCESS)
+		throw OCHException("CommandQueue::enqueueNDRangeKernel()", error);
+	return event;
+}
+
+cl::Kernel load_kernel(cl::Program &program, const std::string &entry_point) {
+	cl_int error;
+	cl::Kernel kernel(program, entry_point.c_str(), &error);
+	if (error != CL_SUCCESS)
+		throw OCHException("Kernel::Kernel()", error);
+	return kernel;
+}
+
+
 
 #endif /* __OCHELL_H__ */
 

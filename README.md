@@ -8,6 +8,19 @@ I think.
 Maybe.
 Dunno.
 
+Oct 27, 2013
+------------
+Today I experimented a bit with OpenCL. Coming from the CUDA experience I found
+the OpenCL API pretty verbose... There is a simple example that shows it (the
+full code is more than 100 lines just to sum two arrays). So, even if I like
+OpenCL for its portability, but it is a verbosity hell, a dirty solution to
+make its setup shorter has been created. All hail OCHELL, the one-header only
+library for excaping the OpenCL verbosity hell! I plan to improve it in the
+future (maybe using OOP, so that vars aren't continuously passed around).
+In the specific opencl/README there are some links I found nice.
+Anyhow, I like OpenCL because it is similar to OpenGL, because of ICD, and
+because there is also a C++ specification which I prefer to C.
+
 Oct 25, 2013
 ------------
 I added a simple OpenGL 3/4 + FreeGLUT example. Why? Because it may be useful
