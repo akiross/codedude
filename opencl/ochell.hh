@@ -166,7 +166,7 @@ std::string read_file(const std::string &path) {
 	}
 	throw OCHException("ifstream::ifstream()", errno);
 }
-c
+
 std::vector<cl::Platform> get_platforms() {
 	std::vector<cl::Platform> platforms;
 	cl::Platform::get(&platforms);
