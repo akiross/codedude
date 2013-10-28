@@ -38,7 +38,30 @@ Feature:
 	#include <CL/cl.hpp>
 #endif
 
-struct OCHException;
+// Exception type used by OCHell
+struct OCHException {
+	OCHException(const std::string &w, cl_int e);
+	std::string what() const;
+	const std::string message;
+	const cl_int error;
+};
+
+/*
+// Structure with all infos about an initialized OpenCL environment
+struct OCHEnvironment {
+	// Public data
+	cl::Context context;
+	std::vector<cl::Device> devices;
+	std::vector<cl::Program> programs;
+	std::vector<cl::Kernel> kernels;
+	std::vector<cl::CommandQueue> queues;
+
+	// Initialize OpenCL with a queue built on device with given ID and type
+	OCHEnvironment(cl_device_type type=CL_DEVICE_TYPE_ALL,
+		size_t queue_device=0);
+	void load_kernel(std::string src, 
+};
+*/
 
 // Basic functions, to acess "raw" functionalites
 
@@ -76,7 +99,7 @@ cl::Program::Sources load_sources(Iter paths_begin, Iter paths_end);
 template <typename... Args>
 void set_kernel_args(cl::Kernel &kernel, Args... values);
 
-// Create a buffer object using the specified flags, size and data
+// Create a buffer object using the specified flags, byte size and data
 cl::Buffer create_buffer(cl::Context &context, const std::string &flags,
 	size_t size, void *host_ptr=NULL);
 
@@ -108,18 +131,27 @@ cl::Kernel load_kernel(cl::Program &program, const std::string &entry_point);
 ////////////////////////////// Implementation /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-struct OCHException {
-	OCHException(const std::string &w, cl_int e):
-		message(w), error(e) {
-	}
-	std::string what() const {
-		std::stringstream ss;
-		ss << message << " (" << error << ")";
-		return ss.str();
-	}
-	const std::string message;
-	const cl_int error;
-};
+// Exception structure
+
+OCHException::OCHException(const std::string &w, cl_int e):
+	message(w), error(e) {
+}
+
+std::string OCHException::what() const {
+	std::stringstream ss;
+	ss << message << " (" << error << ")";
+	return ss.str();
+}
+
+// Environment structure
+/*
+OCHEnvironment::OCHEnvironment(cl_device_type type, size_t queue_device) {
+	context = create_context(type);
+	devices = get_devices(ctx);
+	queue = create_command_queue(context, devices[queue_device]);
+}
+*/
+// Basic functions
 
 std::string read_file(const std::string &path) {
 	std::ifstream in(path.c_str(), std::ios::in | std::ios::binary);
@@ -132,9 +164,9 @@ std::string read_file(const std::string &path) {
 		in.close();
 		return(contents);
 	}
-	throw(errno);
+	throw OCHException("ifstream::ifstream()", errno);
 }
-
+c
 std::vector<cl::Platform> get_platforms() {
 	std::vector<cl::Platform> platforms;
 	cl::Platform::get(&platforms);

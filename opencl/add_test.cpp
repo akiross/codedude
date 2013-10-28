@@ -10,6 +10,20 @@
 #include <fstream>
 #include <cerrno>
 
+std::string read_file(const std::string &path) {
+	std::ifstream in(path.c_str(), std::ios::in | std::ios::binary);
+	if (in) {
+		std::string contents;
+		in.seekg(0, std::ios::end);
+		contents.resize(in.tellg());
+		in.seekg(0, std::ios::beg);
+		in.read(&contents[0], contents.size());
+		in.close();
+		return(contents);
+	}
+	throw errno;
+}
+
 void check_error(cl_int err, const char *name) {
 	if (err != CL_SUCCESS) {
 		std::cerr << "ERROR: " << name << " (" << err << ")\n";
@@ -22,6 +36,7 @@ int main(int argc, char **argv) {
 	int *A = new int[len];
 	int *B = new int[len];
 	int *C = new int[len];
+	size_t bsize = len * sizeof(int);
 	
 	for (int i = 0; i < len; ++i) {
 		A[i] = 10 + i;
@@ -53,11 +68,11 @@ int main(int argc, char **argv) {
 	check_error(err, "Context::Context()");
 	
 	// Alocate buffers for I/O
-	cl::Buffer inA(context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR, len, A, &err);
+	cl::Buffer inA(context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR, bsize, A, &err);
 	check_error(err, "Buffer::Buffer()");
-	cl::Buffer inB(context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR, len, B, &err);
+	cl::Buffer inB(context, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR, bsize, B, &err);
 	check_error(err, "Buffer::Buffer()");
-	cl::Buffer outC(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, len, C, &err);
+	cl::Buffer outC(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, bsize, C, &err);
 	check_error(err, "Buffer::Buffer()");
 	
 	// Get a device handler
@@ -105,7 +120,7 @@ int main(int argc, char **argv) {
 	
 	// Wait for the conclusion
 	event.wait();
-	err = queue.enqueueReadBuffer(outC, CL_TRUE, 0, len, C);
+	err = queue.enqueueReadBuffer(outC, CL_TRUE, 0, bsize, C);
 	check_error(err, "Queue::enqueueReadBuffer()");
 	
 	for (int i = 0; i < len; ++i)

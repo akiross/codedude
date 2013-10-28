@@ -14,6 +14,7 @@ int main(int argc, char **argv) {
 	int *A = new int[length];
 	int *B = new int[length];
 	int *C = new int[length];
+	size_t bsize = length * sizeof(int);
 
 	for (int r = 0, i = 0; r < side; ++r)
 		for (int c = 0; c < side; ++c, ++i) {
@@ -28,9 +29,9 @@ int main(int argc, char **argv) {
 	cl::Kernel kern = load_kernel(prog, "square_matrix_multiply");
 
 	// Buffer objects
-	cl::Buffer inA = create_buffer(ctx, "rh", length, A);
-	cl::Buffer inB = create_buffer(ctx, "rh", length, B);
-	cl::Buffer outC = create_buffer(ctx, "wh", length, C);
+	cl::Buffer inA = create_buffer(ctx, "rh", bsize, A);
+	cl::Buffer inB = create_buffer(ctx, "rh", bsize, B);
+	cl::Buffer outC = create_buffer(ctx, "wh", bsize, C);
 
 	// Launch kernel
 	set_kernel_args(kern, outC, inA, inB, side);
@@ -39,7 +40,7 @@ int main(int argc, char **argv) {
 		queue, kern, cl::NullRange, cl::NDRange(side, side), cl::NDRange(1, 1)
 	);
 	event.wait();
-	blocking_read_buffer(queue, outC, 0, length, C);
+	blocking_read_buffer(queue, outC, 0, bsize, C);
 	
 	// Print result matrix
 	for (int r = 0, i = 0; r < side; ++r) {
