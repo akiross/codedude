@@ -1,12 +1,11 @@
-AkiRoss' AWK cheatsheet
-by Alessandro [AkiRoss] Re ~ www.ale-re.net
--------------------------------------------------------------------------------
+# AkiRoss' AWK cheatsheet
+by Alessandro [AkiRoss] Re -> www.ale-re.net
 
-**Big helps:
+## Big helps:
 http://www.vectorsite.net/tsawk.html
 http://www.gnu.org/manual/gawk/html_node/index.html
 
-**My help (a cheatsheet):
+## My help (a cheatsheet):
 AWK stands for Aho, Weinberger, Kernighan.
 Quick console usage
 	awk -f script_file input_data
@@ -80,5 +79,3 @@ Redirections and pipes
 	print | "tool opts"		Pipes the output to a shell tool
 	they works on outputs, not variables or return values
 
-Should be enough :)
-Stay --sync
