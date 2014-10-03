@@ -8,31 +8,30 @@ by Alessandro [AkiRoss] Re -> www.ale-re.net
 ## My help (a cheatsheet):
  * AWK stands for Aho, Weinberger, Kernighan.
  * Quick console usage
-	awk -f script_file input_data
-	awk 'pattern { action }' input_data
-	awk 'rules' -			Read input from stdin
+   * awk -f script_file input_data
+   * awk 'pattern { action }' input_data
+   * awk 'rules' -			Read input from stdin
  * Script are made of rules:
-	pattern { action }
-	action is executed if pattern is matched
-	you can omit pattern to execute that action on every row
-	you can omit action to print the row that match your pattern
-
+   * pattern { action }
+   * action is executed if pattern is matched
+   * you can omit pattern to execute that action on every row
+   * you can omit action to print the row that match your pattern
  * Syntax is really similar to C one
-	{ block }
-	if (cond) ... else ...
-	# Comments
-	while, for, do, switch, break, continue, next, exit
+   * { block }
+   * if (cond) ... else ...
+   * # Comments
+   * while, for, do, switch, break, continue, next, exit
  * BEGIN and END patterns are fixed and executed when script begin and end
  * Usual operators
-	= (assign)
-	== (compare)
-	++, +=, ...
+   * = (assign)
+   * == (compare)
+   * ++, +=, ...
  * Strings are "as usual", but AWK can evaluate them as integer
-	"123" == 123
+   * "123" == 123
  * In addition there are regexps, quoted between /s
-	/^[Rr]eg[Ee]xp?$/
-	metachars doesn't need quoting
-	usual metachars
+   * /^[Rr]eg[Ee]xp?$/
+   * metachars doesn't need quoting
+   * usual metachars
  * Patterns are automagically divided into fields
 	Fields are separated by a given char (default is ' ') or regex
 	$0						Is the whole line
